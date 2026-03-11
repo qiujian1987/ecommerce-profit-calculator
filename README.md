@@ -74,13 +74,22 @@ results = batch_calculate(items)
 推荐: Shopify (利润最高)
 ```
 
-## 🛠️ 安装
+## 🛠️ 安装使用
+
+### 在线使用 ⭐推荐
+直接访问: https://qiujian1987.github.io/ecommerce-profit-calculator
+
+### 本地运行
 
 ```bash
 git clone https://github.com/qiujian1987/ecommerce-profit-calculator.git
 cd ecommerce-profit-calculator
+
+# Python版本
 pip install -r requirements.txt
 python calculator.py
+
+# 或直接打开 index.html 使用网页版
 ```
 
 ## 🤝 贡献代码
