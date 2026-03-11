@@ -92,7 +92,33 @@ python calculator.py
 # 或直接打开 index.html 使用网页版
 ```
 
-## 🤝 贡献代码
+## 🚀 API服务（新功能！）
+
+无需安装，直接调用API：
+
+```bash
+# 计算利润
+curl -X POST https://api.example.com/calculate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "platform": "amazon",
+    "cost_price": 30,
+    "selling_price": 59.99,
+    "weight": 0.3
+  }'
+```
+
+**免费额度**: 100次/天  
+**商业合作**: 联系开通高级API
+
+### 本地运行API
+
+```bash
+pip install -r requirements.txt
+python api_server.py
+
+# 访问 http://localhost:5000
+```
 
 欢迎提交 Issue 和 PR！
 
