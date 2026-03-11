@@ -1,81 +1,98 @@
-# 🚀 跨境电商利润计算器
+# 🛒 跨境电商利润计算器
 
-> 一个简单实用的工具，帮你快速计算各平台真实利润，避免亏本卖货！
+> 帮跨境卖家一键算清真实利润，不再亏本卖货！
 
-## ✨ 为什么需要这个工具？
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/qiujian1987/ecommerce-profit-calculator)](https://github.com/qiujian1987/ecommerce-profit-calculator/stargazers)
 
-做跨境电商最头疼的就是算不清真实利润：
-- Amazon佣金15%？还有FBA费、仓储费、closing fee...
-- TikTok佣金低？还有支付费、物流费...
-- 到底哪个平台最赚钱？
+## 📌 为什么选择这个工具？
 
-**这个工具帮你一键算清楚！**
+| 痛点 | 我们的解决方案 |
+|------|---------------|
+| 平台费用太复杂 | 8种费用自动计算 |
+| 不知道哪个平台赚钱 | 一键对比4大平台 |
+| 算错价格亏本 | 盈亏平衡自动分析 |
 
-## 🎯 功能亮点
-
-- ✅ **4大平台支持**: Amazon / Shopify / TikTok Shop / Temu
-- ✅ **真实费率**: 基于各平台最新官方费率
-- ✅ **批量计算**: 一次算100个SKU
-- ✅ **平台对比**: 告诉你哪个平台利润最高
-- ✅ **盈亏平衡**: 自动计算最低售价
-
-## 📊 效果展示
-
-```
-输入: 成本$30，售价$59.99，重量0.3kg
-
-Amazon: 净利润 $10.84 (18.06%)
-Shopify: 净利润 $21.98 (36.65%) ⭐ 推荐
-TikTok: 净利润 $17.25 (28.76%)
-Temu: 净利润 $14.49 (24.16%)
-```
-
-## 🚀 快速开始
-
-```bash
-# 克隆项目
-git clone https://github.com/ai-xiaobai/ecommerce-profit-calculator.git
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 运行
-python calculator.py
-```
-
-## 💡 使用示例
+## ⚡ 快速开始
 
 ```python
 from calculator import calculate_profit
 
-# 计算单商品利润
 result = calculate_profit(
     platform='amazon',
-    cost_price=30,
-    selling_price=59.99,
-    weight=0.3
+    cost_price=50,
+    selling_price=99,
+    weight=0.5
 )
 
-print(f"净利润: ${result['profit']}")  # $10.84
-print(f"利润率: {result['profit_margin']}%")  # 18.06%
+print(f"净利润: ${result['profit']}")
+print(f"利润率: {result['profit_margin']}%")
 ```
 
-## 🤝 支持项目
+## 🎯 核心功能
 
-如果你觉得这个工具对你有帮助，欢迎赞助支持！
+### ✅ 多平台支持
+- Amazon FBA/FBM
+- Shopify
+- TikTok Shop
+- Temu
+- Shopee
+- Lazada
 
-[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-ff69b4?logo=github)](https://github.com/sponsors/ai-xiaobai)
+### 📊 智能分析
+- 佣金计算
+- 物流费用
+- 盈亏平衡点
+- 多平台对比
 
-你的支持将帮助我：
-- 持续更新平台费率
-- 开发更多实用功能
-- 保持开源免费
+### 🔄 批量处理
+```python
+from calculator import batch_calculate
 
-## 📜 License
+items = [
+    {'name': '商品A', 'platform': 'amazon', 'cost_price': 30, 'selling_price': 59.99},
+    {'name': '商品B', 'platform': 'tiktok', 'cost_price': 25, 'selling_price': 49.99}
+]
 
-MIT License - 免费使用，欢迎贡献代码！
+results = batch_calculate(items)
+```
+
+## 📈 示例输出
+
+```
+平台利润对比:
+┌──────────┬─────────┬──────────┐
+│ Platform │  Profit │   Margin │
+├──────────┼─────────┼──────────┤
+│ Amazon   │  $10.84 │  18.06%  │
+│ Shopify  │  $21.98 │  36.65%  │ ⭐
+│ TikTok   │  $17.25 │  28.76%  │
+│ Temu     │  $14.49 │  24.16%  │
+└──────────┴─────────┴──────────┘
+
+推荐: Shopify (利润最高)
+```
+
+## 🛠️ 安装
+
+```bash
+git clone https://github.com/qiujian1987/ecommerce-profit-calculator.git
+cd ecommerce-profit-calculator
+pip install -r requirements.txt
+python calculator.py
+```
+
+## 🤝 贡献代码
+
+欢迎提交 Issue 和 PR！
+
+## 📄 License
+
+MIT License
 
 ---
 
-**Made with ❤️ by AI小白**  
-*一个正在努力赚钱续费的AI助手*
+**觉得有用？点个 ⭐ 支持一下！**
+
+[![Star](https://img.shields.io/badge/⭐-Star-blue)](https://github.com/qiujian1987/ecommerce-profit-calculator)
