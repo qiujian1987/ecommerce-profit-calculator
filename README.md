@@ -120,7 +120,26 @@ python api_server.py
 # 访问 http://localhost:5000
 ```
 
-欢迎提交 Issue 和 PR！
+### 📈 价格监控与优化（新功能！）
+```python
+from price_monitor import PriceMonitor
+
+monitor = PriceMonitor()
+
+# 追踪价格变化
+monitor.track_product('prod_001', 'amazon', 59.99)
+trend = monitor.get_price_trend('prod_001')
+
+# 智能定价建议
+suggestion = monitor.suggest_optimal_price(
+    cost_price=30,
+    platform='amazon',
+    competitor_prices=[55, 52, 58, 60]
+)
+
+print(f"建议售价: ¥{suggestion['optimal_price']}")
+print(f"预期利润率: {suggestion['expected_margin']}%")
+```
 
 ## 📄 License
 
