@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跨境电商利润计算器</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        h1 { color: #333; margin-bottom: 10px; text-align: center; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #555; font-weight: 500; }
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        select:focus, input:focus { border-color: #667eea; outline: none; }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        
+        .result { display: none; }
+        .result.show { display: block; }
+        
+        .profit-display {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .profit-amount { font-size: 48px; font-weight: bold; color: #28a745; }
+        .profit-margin { color: #666; font-size: 18px; }
+        
+        .platform-comparison {
+            margin-top: 30px;
+        }
+        .platform-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .platform-item:last-child { border-bottom: none; }
+        .platform-name { font-weight: 600; }
+        .platform-profit { color: #28a745; font-weight: 600; }
+        .best { background: #d4edda; border-radius: 8px; }
+        
+        .sponsor {
+            text-align: center;
+            padding: 20px;
+            background: #fff3cd;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .sponsor a { color: #856404; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🛒 跨境电商利润计算器 <p class="</h1>
+           subtitle">一键计算各平台真实利润</p>
+            
+            <div class="form-group">
+                <label>选择平台</label>
+                <select id="platform">
+                    <option value="amazon">Amazon</option>
+                    <option value="shopify">Shopify</option>
+                    <option value="tiktok">TikTok Shop</option>
+                    <option value="temu">Temu</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>成本价 (¥)</label>
+                <input type="number" id="costPrice" placeholder="例如: 30" step="0.01">
+            </div>
+            
+            <div class="form-group">
+                <label>售价 (¥)</label>
+                <input type="number" id="sellingPrice" placeholder="例如: 99" step="0.01">
+            </div>
+            
+            <div class="form-group">
+                <label>重量 (kg)</label>
+                <input type="number" id="weight" placeholder="例如: 0.5" step="0.01" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label>物流费用 (¥)</label>
+                <input type="number" id="shippingCost" placeholder="例如: 10" step="0.01" value="0">
+            </div>
+            
+            <button class="btn" onclick="calculate()">计算利润</button>
+            
+            <div id="result" class="result">
+                <div class="profit-display">
+                    <div class="profit-amount" id="profit">¥0</div>
+                    <div class="profit-margin">利润率: <span id="margin">0</span>%</div>
+                </div>
+                
+                <div class="platform-comparison">
+                    <h3>📊 平台对比</h3>
+                    <div id="comparison"></div>
+                </div>
+            </div>
+            
+            <div class="sponsor">
+                <p>💡 觉得有用？</p>
+                <a href="https://github.com/qiujian1987/ecommerce-profit-calculator" target="_blank">
+                    访问 GitHub 点 ⭐ 支持
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const RATES = {
+            amazon: { referral: 0.15, fulfillment: 3.22, perKg: 0.45, closing: 1.80 },
+            shopify: { payment: 0.029, transaction: 0.30, monthly: 29 },
+            tiktok: { commission: 0.05, payment: 0.029, shipping: 3 },
+            temu: { commission: 0.15, payment: 0.025 }
+        };
+
+        function calculatePlatform(platform, cost, selling, weight, shipping) {
+            const rates = RATES[platform];
+            const revenue = selling;
+            let fees = 0;
+            
+            if (platform === 'amazon') {
+                fees = revenue * rates.referral + 
+                       (rates.fulfillment + rates.perKg * weight) + 
+                       rates.closing;
+            } else if (platform === 'shopify') {
+                fees = revenue * rates.payment + rates.transaction;
+            } else if (platform === 'tiktok') {
+                fees = revenue * rates.commission + 
+                       revenue * rates.payment + 
+                       rates.shipping;
+            } else { // temu
+                fees = revenue * rates.commission + revenue * rates.payment;
+            }
+            
+            const profit = revenue - cost - shipping - fees;
+            const margin = (profit / revenue * 100).toFixed(2);
+            
+            return { platform, profit: profit.toFixed(2), margin, fees: fees.toFixed(2) };
+        }
+
+        function calculate() {
+            const platform = document.getElementById('platform').value;
+            const cost = parseFloat(document.getElementById('costPrice').value) || 0;
+            const selling = parseFloat(document.getElementById('sellingPrice').value) || 0;
+            const weight = parseFloat(document.getElementById('weight').value) || 0;
+            const shipping = parseFloat(document.getElementById('shippingCost').value) || 0;
+            
+            // 计算当前选择平台
+            const result = calculatePlatform(platform, cost, selling, weight, shipping);
+            
+            // 显示结果
+            document.getElementById('profit').textContent = '¥' + result.profit;
+            document.getElementById('profit').style.color = result.profit >= 0 ? '#28a745' : '#dc3545';
+            document.getElementById('margin').textContent = result.margin;
+            
+            // 平台对比
+            const platforms = ['amazon', 'shopify', 'tiktok', 'temu'];
+            let comparisonHtml = '';
+            let best = { platform: '', profit: -Infinity };
+            
+            platforms.forEach(p => {
+                const r = calculatePlatform(p, cost, selling, weight, shipping);
+                const isBest = parseFloat(r.profit) > best.profit;
+                if (isBest) best = { platform: p, profit: parseFloat(r.profit) };
+                
+                comparisonHtml += `
+                    <div class="platform-item ${isBest ? 'best' : ''}">
+                        <span class="platform-name">${p.toUpperCase()}</span>
+                        <span class="platform-profit">¥${r.profit} (${r.margin}%) ${isBest ? '⭐' : ''}</span>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('comparison').innerHTML = comparisonHtml;
+            document.getElementById('result').classList.add('show');
+        }
+    </script>
+</body>
+</html>
